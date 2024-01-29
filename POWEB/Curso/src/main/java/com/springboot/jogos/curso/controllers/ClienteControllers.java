@@ -1,60 +1,43 @@
 package com.springboot.jogos.curso.controllers;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.springboot.jogos.curso.entities.Cliente;
+import com.springboot.jogos.curso.services.ClienteService;
 
 @RestController
 @RequestMapping("/api/clientes")
 public class ClienteControllers {
 
-    @PostMapping("")
-	@ResponseBody
-	public String adicionarCliente(String nome, String email, String telefone, String endereco) {
-		return "Cliente adicionado: " + nome;
-	}
+    @Autowired
+    private ClienteService clienteService;
 
-	@PutMapping("/{id_usuario}")
-	@ResponseBody
-	public String atualizarCliente(@PathVariable("id_usuario") Long id_usuario, String nome, String email, String senha) {
-		return "Cliente atualizado.";
-	}
+    @PostMapping("/adicionar")
+    public String adicionarCliente(@RequestBody Cliente cliente) {
+        return clienteService.adicionarCliente(cliente);
+    }
 
-	@DeleteMapping("/{id_usuario}")
-	@ResponseBody
-	public String deletarCliente(@PathVariable("id_usuario") Long id_usuario) {
-		return "Cliente deletado.";
-	}
+    @GetMapping("/buscar/{id}")
+    public Cliente buscarCliente(@PathVariable Long id_usuario) {
+        return clienteService.buscarCliente(id_usuario);
+    }
 
-	@GetMapping("/{id_usuario}")
-	@ResponseBody
-	public String buscarCliente(@PathVariable("id_usuario") Long id_usuario) {
-		return "Cliente retornado.";
-	}
+    @GetMapping("/listar")
+    public List<Cliente> listarClientes() {
+        return clienteService.listarClientes();
+    }
 
-	@GetMapping("")
-	@ResponseBody
-	public String listarClientes() {
-		return "Clientes listados.";
-	}
-
-	@PostMapping("/{id_usuario}/telefone")
-	@ResponseBody
-	public String adicionarTelefone(@PathVariable("id_usuario") Long id_usuario, String telefone) {
-		return "Telefone adicionado ao cliente.";
-	}
-
-	@DeleteMapping("/{id_usuario}/telefone")
-	@ResponseBody
-	public String deletarTelefone(@PathVariable("id_usuario") Long id_usuario, String telefone) {
-		return "Telefone deletado do cliente.";
-	}
-
+    @DeleteMapping("/deletar/{id_usuario}")
+    public String deletarCliente(@PathVariable Long id_usuario) {
+        return clienteService.deletarCliente(id_usuario);
+    }
 }
-
-

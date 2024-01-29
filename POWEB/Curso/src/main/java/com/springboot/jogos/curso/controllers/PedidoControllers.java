@@ -1,64 +1,69 @@
 package com.springboot.jogos.curso.controllers;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.jogos.curso.entities.Item;
+import com.springboot.jogos.curso.entities.Pedido;
+import com.springboot.jogos.curso.services.PedidoService;
 
 @RestController
 @RequestMapping("/api/pedidos")
 public class PedidoControllers {
 
-    @PostMapping("")
-	@ResponseBody
-	public String adicionarPedido(Long id_pedido) {
-		return "Pedido adicionado.";
-	}
+    @Autowired
+    private PedidoService pedidoService;
 
-	@PutMapping("/{id_pedido}")
-	@ResponseBody
-	public String atualizarPedido(@PathVariable("id_pedido") Long id_pedido) {
-		return "Pedido atualizado.";
-	}
+    @Autowired
+    public void PedidoController(PedidoService pedidoService) {
+        this.pedidoService = pedidoService;
+    }
 
-	@DeleteMapping("/{id_pedido}")
-	@ResponseBody
-	public String deletarPedido(@PathVariable("id_pedido") Long id_pedido) {
-		return "Pedido deletado.";
-	}
+    @GetMapping("/buscar/{id}")
+    public Pedido buscarPedido(@PathVariable Long id) {
+        return pedidoService.buscarPorId(id);
+    }
 
-	@GetMapping("/{id_pedido}")
-	@ResponseBody
-	public String buscarPedido(@PathVariable("id_pedido") Long id_pedido) {
-		return "Pedido retornado.";
-	}
+    @PostMapping("/adicionar/{id_usuario}")
+    public String adicionarPedido(@PathVariable Long id_usuario) {
+        return pedidoService.adicionarPedido(id_usuario);
+    }
 
-	@GetMapping("")
-	@ResponseBody
-	public String listarPedidos() {
-		return "Pedidos listados.";
-	}
+    @PutMapping("/atualizar/{id_pedido}/{id_usuario}")
+    public String atualizarPedido(@PathVariable Long id_pedido, @PathVariable Long id_usuario,
+                                @RequestParam float valorTotal, @RequestParam java.sql.Date dataPedido,
+                                @RequestParam java.sql.Date dataEntrega) {
+        // Fazer a conversão de String para java.sql.Date, se necessário
+        return pedidoService.atualizarPedido(id_pedido, id_usuario, valorTotal, dataPedido, dataEntrega);
+    }
 
-	@PostMapping("/{id_pedido}/id_item")
-	@ResponseBody
-	public String adicionarItem(@PathVariable("id_pedido") Long id_pedido, Long id_item) {
-		return "Item adicionado ao pedido.";
-	}
+    @DeleteMapping("/deletar/{id_pedido}")
+    public String deletarPedido(@PathVariable Long id_pedido) {
+        return pedidoService.deletarPedido(id_pedido);
+    }
 
-	@DeleteMapping("/{id_pedido}/id_item")
-	@ResponseBody
-	public String deletarItem(@PathVariable("id_pedido") Long id_pedido, Long id_item) {
-		return "Item deletado do pedido.";
-	}
+    @GetMapping("/listar")
+    public List<Pedido> listarPedidos() {
+        return pedidoService.listarPedidos();
+    }
 
-	@GetMapping("/{id}/id_item")
-	@ResponseBody
-	public String listarItens(@PathVariable("id_item") Long id_item) {
-		return "Lista de itens do pedido.";
-	}
+    @PostMapping("/adicionarItem/{id_pedido}")
+    public String adicionarItemAoPedido(@PathVariable Long id_pedido, @RequestBody Item item) {
+        return pedidoService.adicionarItemAoPedido(id_pedido, item);
+    }
+
+    @DeleteMapping("/deletarItem/{id_pedido}/{id_item}")
+    public String deletarItemDoPedido(@PathVariable Long id_pedido, @PathVariable Long id_item) {
+        return pedidoService.deletarItemDoPedido(id_pedido, id_item);
+    }
 }
