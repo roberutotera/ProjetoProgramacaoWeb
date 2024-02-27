@@ -1,58 +1,40 @@
 package com.springboot.jogos.curso.controllers;
 
+import com.springboot.jogos.curso.entities.Funcionario;
+import com.springboot.jogos.curso.services.FuncionarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/funcionarios")
 public class FuncionarioControllers {
 
-    @PostMapping("")
-	@ResponseBody
-	public String adicionarFuncionario(String nome, String email, String telefone, String endereco, String cargo,
-			float salario) {
-		return "Funcionario adicionado: " + nome;
-	}
+    private FuncionarioService funcionarioService;
 
-	@PutMapping("/{id_usuario}")
-	@ResponseBody
-	public String atualizarFuncionario(@PathVariable("id_usuario") Long loginUsuario, String nome, String email, String senhaUsuario,
-			String cargo, float salario) {
-		return "Funcionario atualizado.";
-	}
+    @Autowired
+    public void FuncionarioController(FuncionarioService funcionarioService) {
+        this.funcionarioService = funcionarioService;
+    }
 
-	@DeleteMapping("/{id_usuario}")
-	@ResponseBody
-	public String deletarFuncionario(@PathVariable("id_usuario") Long id_usuario) {
-		return "Funcionario deletado.";
-	}
+    @PostMapping("/adicionar")
+    public String adicionarFuncionario(@RequestBody Funcionario funcionario) {
+        return funcionarioService.adicionarFuncionario(funcionario);
+    }
 
-	@GetMapping("/{id_usuario}")
-	@ResponseBody
-	public String buscarFuncionario(@PathVariable("id_usuario") Long id_usuario) {
-		return "Funcionario retornado.";
-	}
+    @GetMapping("/buscar/{id_usuario}")
+    public Funcionario buscarFuncionario(@PathVariable Long id_usuario) {
+        return funcionarioService.buscarFuncionario(id_usuario);
+    }
 
-	@GetMapping("")
-	@ResponseBody
-	public String listarFuncionarios() {
-		return "Funcionarios listados.";
-	}
+    @GetMapping("/listar")
+    public List<Funcionario> listarFuncionarios() {
+        return funcionarioService.listarFuncionarios();
+    }
 
-	@PostMapping("/{id_usuario}/id_venda")
-	@ResponseBody
-	public String adicionarVenda(@PathVariable("id_usuario") Long id_usuario, Long id_vendas) {
-		return "Venda adicionada ao funcionario.";
-	}
-
-	@DeleteMapping("/{id_usuario}/id_venda")
-	@ResponseBody
-	public String deletarVenda(@PathVariable("id_usuario") Long id_usuario, Long id_vendas) {
-		return "Venda deletada do funcionario.";
-	}
-
-	@GetMapping("/{id_usuario}/id_vendas")
-	@ResponseBody
-	public String listarVendas(@PathVariable("id_vendas") Long id_vendas) {
-		return "Lista de vendas do funcionaio.";
-	}
+    @DeleteMapping("/deletar/{id_usuario}")
+    public String deletarFuncionario(@PathVariable Long id_usuario) {
+        return funcionarioService.deletarFuncionario(id_usuario);
+    }
 }
