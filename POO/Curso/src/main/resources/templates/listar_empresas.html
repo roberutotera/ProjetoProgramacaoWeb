@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Empresas</title>
+    <link rel="stylesheet" type="text/css" href="/css/menu.css">
+</head>
+<body>
+    <h2>Listar Empresas</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nome da Empresa</th>
+        </tr>
+        <!-- Iterar sobre a lista de empresas -->
+        <th:block th:each="empresa : ${empresas}">
+            <tr>
+                <td th:text="${empresa.id_empresa}"></td>
+                <td th:text="${empresa.nome_empresa}"></td>
+            </tr>
+        </th:block>
+    </table>
+    <a href="/menu"><button>Voltar ao Menu</button></a>
+</body>
+</html>
