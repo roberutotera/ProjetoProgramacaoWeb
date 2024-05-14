@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Jogos</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+    <a th:href="@{/}" class="btn">Voltar para a página inicial</a>
+    <h1>Estoque</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Ano</th>
+                <th>Quantidade</th>
+                <th>Preço</th>
+                <th>Plataforma</th>
+                <th>Empresa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterando sobre a lista de jogos e exibindo os dados -->
+            <tr th:each="jogo : ${jogos}">
+                <td th:text="${jogo.id_jogo}">ID</td>
+                <td th:text="${jogo.nome}">Nome</td>
+                <td th:text="${jogo.ano}">Ano</td>
+                <td th:text="${jogo.quantidade}">Quantidade</td>
+                <td th:text="${jogo.preco}">Preço</td>
+                <td th:text="${jogo.plataforma}">Plataforma</td>
+                <!-- Aqui acessamos o nome da empresa associada a este jogo -->
+                <td th:text="${jogo.empresa.nome_empresa}">Empresa</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
