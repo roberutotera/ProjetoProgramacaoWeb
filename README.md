@@ -28,7 +28,5 @@ Autenticação de usuários: os usuários podem criar uma conta e fazer login.
 
 Histórico de compras: os usuários podem visualizar um histórico de todas as compras realizadas anteriormente.
 
-# Como Executar o Projeto
-
 # Licença
 Este projeto está licenciado sob a Licença MIT.
